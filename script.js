@@ -39,6 +39,7 @@ function calculate(prev, current, operator) {
   }
 
   return result.toString();
+  
 }
 
 // Update the display to show both operands and operator
