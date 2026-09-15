@@ -105,3 +105,44 @@ equalsButton.addEventListener("click", () => {
 
 // Initial display update
 updateDisplay();
+
+document.addEventListener("keydown", (event) => { // Handle keyboard input for numbers, operators, and actions
+  const key = event.key;
+  if (key >= "0" && key <= "9") {
+    currentInput += key;
+    updateDisplay();
+  } else if (key === ".") {
+    if (!currentInput.includes(".")) {
+      currentInput += ".";
+      updateDisplay();
+    }
+  } else if (key === "+" || key === "-" || key === "*" || key === "/") {
+    if (currentInput === "") return;
+    
+    if (currentOperator && previousInput) {
+      currentInput = calculate(previousInput, currentInput, currentOperator);
+    }
+    
+    currentOperator = key === "/" ? "÷" : key === "*" ? "×" : key;
+    previousInput = currentInput;
+    currentInput = "";
+    updateDisplay();
+  } else if (key === "Enter" || key === "=") {
+    if (!currentOperator || currentInput === "" || previousInput === "") return;
+    
+    currentInput = calculate(previousInput, currentInput, currentOperator);
+    currentOperator = null;
+    previousInput = "";
+    updateDisplay();
+  } else if (key === "Escape") {
+    currentInput = "";
+    currentOperator = null;
+    previousInput = "";
+    updateDisplay();
+  }
+  //backspace key to delete last character
+  else if (key === "Backspace") {
+    currentInput = currentInput.slice(0, -1);
+    updateDisplay();
+  }
+});
